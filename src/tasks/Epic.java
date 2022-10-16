@@ -5,15 +5,17 @@ import status.Status;
 import java.util.*;
 
 public class Epic extends Task {
-    private ArrayList<Subtask> subtasks = new ArrayList<>();
+
     private final List<Integer> subtaskIds = new ArrayList<>();
 
     public Epic(String description, String title, Status status) {
         super(description, title, status);
     }
+
     public Epic(String title, Status status, int id, String description) {
         super(title, status, id, description);
     }
+
     public List<Integer> getSubtaskIds() {
         return subtaskIds;
     }

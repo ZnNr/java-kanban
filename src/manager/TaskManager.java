@@ -6,6 +6,7 @@ import tasks.Subtask;
 import tasks.Task;
 
 import java.util.*;
+
 public class TaskManager {
 
     private int generateId = 1;
@@ -14,7 +15,6 @@ public class TaskManager {
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
-
 
 
     public int generateId() {
@@ -30,7 +30,6 @@ public class TaskManager {
         tasks.put(newTaskId, task);
         return newTaskId;
     }
-
 
 
     // получение списка всех задач
@@ -69,7 +68,6 @@ public class TaskManager {
             System.out.println("Таск не найден");
         }
     }
-
 
 
     public void printTasks() {
@@ -184,22 +182,22 @@ public class TaskManager {
     }
 
 
-// печать эпиков
-public void printEpics() {
-    if (epics.size() == 0) {
-        System.out.println("Лист Эпиков пустой");
-        return;
+    // печать эпиков
+    public void printEpics() {
+        if (epics.size() == 0) {
+            System.out.println("Лист Эпиков пустой");
+            return;
+        }
+        for (Epic epic : epics.values()) {
+            System.out.println("Epic{" +
+                    "subtasksIds=" + epic.getSubtaskIds() +
+                    ", description='" + epic.getDescription() + '\'' +
+                    ", id=" + epic.getId() +
+                    ", title='" + epic.getTitle() + '\'' +
+                    ", status=" + epic.getStatus() +
+                    '}');
+        }
     }
-    for (Epic epic : epics.values()) {
-        System.out.println("Epic{" +
-                "subtasksIds=" + epic.getSubtaskIds() +
-                ", description='" + epic.getDescription() + '\'' +
-                ", id=" + epic.getId() +
-                ", title='" + epic.getTitle() + '\'' +
-                ", status=" + epic.getStatus() +
-                '}');
-    }
-}
 
     /* ------ Методы для подзадач типа Subtask ------ */
 
@@ -218,7 +216,6 @@ public void printEpics() {
             return -1;
         }
     }
-
 
 
     // Получение списка всех подзадач определенного эпика
@@ -285,7 +282,7 @@ public void printEpics() {
     }
 
 
-//печать сабтасков
+    //печать сабтасков
     public void printSubtasks() {
         if (subtasks.size() == 0) {
             System.out.println("Лист Сабтасков пустой");

@@ -1,14 +1,17 @@
 package tasks;
+
 import status.Status;
+
 import java.util.*;
+
 public class Task {
 
-    private  String title; // краткое название задачи
-    private  String description; // описание задачи
-    private  int id = 0; // id задачи
+    private String title; // краткое название задачи
+    private String description; // описание задачи
+    private int id = 0; // id задачи
     private Status status; // статус - "NEW", "IN_PROGRESS", "DONE"
 
-    public Task(String title, String description,  Status status) {
+    public Task(String title, String description, Status status) {
         this.title = title;
         this.description = description;
         this.status = status;
@@ -26,12 +29,12 @@ public class Task {
         this.id = id;
         this.description = description;
     }
+
     protected Task(String title, int id, String description) {
         this.title = title;
-        this.id= id;
+        this.id = id;
         this.description = description;
     }
-
 
 
     // получить название задачи
@@ -97,8 +100,6 @@ public class Task {
                 ", status=" + status +
                 '}';
     }
-
-
 
 
 }

@@ -1,6 +1,9 @@
 package tasks;
+
 import status.Status;
+
 import java.util.*;
+
 public class Subtask extends Task {
 
     private final int epicId;
@@ -9,6 +12,7 @@ public class Subtask extends Task {
         super(description, title, status);
         this.epicId = epicId;
     }
+
     // получить id эпика
     public int getEpicId() {
         return epicId;

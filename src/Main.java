@@ -14,8 +14,18 @@ public class Main {
         System.out.println("Проверка");
         System.out.println("-> Task <-");
         System.out.println("-> Создадим Таск");
-        manager.createTask(new Task("Описание-1", "Task-1", Status.NEW));
-        manager.createTask(new Task("Описание-2", "Task-2", Status.NEW));
+        /*спасибо за ревью, немного не полнял задачу что нужно сделать...
+        "по задумке create task возвращает id
+        к примеру в Epic epic = manager.getEpicById(3);
+        используя этот id вменсто 3"
+        createTask возвращает id обычной задачи,
+        для задачь эпических масштабов присваивается свой id  с помощью createEpic,
+        id последовательно присваивается с помощью общего для всех
+        generateId() {return ++id;}
+        Соответсвенно, для чего заправшивать id эпика через createTask
+         */
+        manager.createTask(new Task("Описание обычной задачи-1", "Task-1", Status.NEW));
+        manager.createTask(new Task("Описание обычной задачи-2", "Task-2", Status.NEW));
         manager.printTasks();
         System.out.println("-> Получим все Task");
         List<Task> taskList = manager.getAllTasks();
@@ -31,8 +41,8 @@ public class Main {
 
         System.out.println("-> Эпик <-");
         System.out.println("-> Создадим Epic");
-        manager.createEpic(new Epic("Описание-1", "Epic-1", Status.NEW));
-        manager.createEpic(new Epic("Описание-2", "Epic-2", Status.NEW));
+        manager.createEpic(new Epic("Описание Эпического Таска-1", "Epic-1", Status.NEW));
+        manager.createEpic(new Epic("Описание Эпического Таска-2", "Epic-2", Status.NEW));
         manager.printEpics();
         System.out.println("-> Получим все Эпики");
         List<Epic> epics = manager.getAllEpics();
@@ -49,10 +59,10 @@ public class Main {
 
         System.out.println("-> Сабтаск <-");
         System.out.println("Создадим Subtask");
-        manager.createSubtask(new Subtask("Описание-1", "Subtask-1", Status.NEW, 3));
-        manager.createSubtask(new Subtask("Описание-2", "Subtask-2", Status.NEW, 3));
-        manager.createSubtask(new Subtask("Описание-3", "Subtask-3", Status.NEW, 4));
-        manager.createSubtask(new Subtask("Описание-4", "Subtask-4", Status.NEW, 4));
+        manager.createSubtask(new Subtask("Описание подзадачи-1", "Subtask-1", Status.NEW, 3));
+        manager.createSubtask(new Subtask("Описание подзадачи-2", "Subtask-2", Status.NEW, 3));
+        manager.createSubtask(new Subtask("Описание подзадачи-3", "Subtask-3", Status.NEW, 4));
+        manager.createSubtask(new Subtask("Описание подзадачи-4", "Subtask-4", Status.NEW, 4));
         manager.printSubtasks();
         System.out.println("-> Получим все Сабтаски через epic id");
         List<Subtask> subtasksByEpicId = manager.getAllSubtasksByEpicId(3);

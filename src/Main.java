@@ -22,8 +22,9 @@ public class Main {
         для задачь эпических масштабов присваивается свой id  с помощью createEpic,
         id последовательно присваивается с помощью общего для всех
         generateId() {return ++id;}
-        Соответсвенно, для чего заправшивать id эпика через createTask
-         */
+
+        Возможно понимание придет по ходу выполнения ТЗ 4 спринта
+                 */
         manager.createTask(new Task("Описание обычной задачи-1", "Task-1", Status.NEW));
         manager.createTask(new Task("Описание обычной задачи-2", "Task-2", Status.NEW));
         manager.printTasks();

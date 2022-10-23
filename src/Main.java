@@ -1,5 +1,5 @@
-
 // проверка с помощью консоли
+
 import taskManager.Managers;
 import taskManager.TaskManager;
 import status.Status;
@@ -9,10 +9,11 @@ import tasks.Task;
 
 import java.util.List;
 
+
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager taskManager = Managers.getInMemoryTaskManager(Managers.getDefaultHistory());
+        TaskManager taskManager = Managers.getManagerDefault();
         System.out.println("Проверка");
 
 
@@ -56,27 +57,24 @@ public class Main {
         taskManager.getTaskById(1);
 
 
-
         System.out.println("-----! Вызов метода getHistory !---");
         List<Task> history = taskManager.getHistory();
         System.out.println(history);
 
 
 
-        /* далее остатки кода от предыдущего спринта
 
+
+
+        /* далее остатки кода от предыдущего спринта
         System.out.println("-> Получим все Task");
         List<Task> taskList = taskManager.getAllTasks();
         System.out.println(taskList);
-
         System.out.println("-> Обновим Таск");
         task.setStatus(Status.IN_PROGRESS);
         taskManager.updateTask(task);
         System.out.println(task);
         System.out.println();
-
-
-
         System.out.println("-> Получим все Эпики");
         List<Epic> epics = taskManager.getAllEpics();
         System.out.println(epics);
@@ -89,7 +87,6 @@ public class Main {
         Epic epic3 = taskManager.getEpicById(3);
         System.out.println(epic3);
         System.out.println();
-
         System.out.println("-> Сабтаск <-");
         System.out.println("Создадим Subtask");
         taskManager.createSubtask(new Subtask("Описание подзадачи-1", "Subtask-1", Status.NEW, 3));
@@ -107,11 +104,10 @@ public class Main {
         Subtask subtask = taskManager.getSubtaskById(5);
         System.out.println(subtask);
         System.out.println("-> Обновим Сабтаск");
-        subtask.setStatus(Status.IN_PROGRESS);
-        taskManager.updateSubtask(subtask);
+        Subtask.setStatus(Status.IN_PROGRESS);
+        Task.updateSubtask(subtask);
         System.out.println(subtask);
         System.out.println();
-
         System.out.println("-> Удаление <-");
         System.out.println("-> Удаление Таска через id");
         taskManager.deleteTaskById(1);

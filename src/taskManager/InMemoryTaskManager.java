@@ -14,17 +14,15 @@ public class InMemoryTaskManager implements TaskManager {
     private final Map<Integer, Subtask> subtasks = new HashMap<>();
     private final Map<Integer, Epic> epics = new HashMap<>();
 
-    private final HistoryManager historyManager;
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
 
-    public InMemoryTaskManager(HistoryManager historyManager) {
-        this.historyManager = historyManager;
-    }
+
 
     public int generateId() {
         return ++id;
     }
 
-   //получение истории
+    //получение истории
     @Override
     public List<Task> getHistory() {
         return historyManager.getHistory();

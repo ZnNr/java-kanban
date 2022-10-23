@@ -12,14 +12,12 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public void add(Task task) {
         if (task != null) {
+            historyTasks.add(task);
             if (historyTasks.size() >= LIMIT_HISTORY_TASKS) {
                 historyTasks.remove(0);
-                historyTasks.add(task);
-            } else {
-                historyTasks.add(task);
+
             }
-        } else {
-            System.out.println("Задача не найдена");
+
         }
     }
 

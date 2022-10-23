@@ -1,7 +1,11 @@
 package status;
 
 public enum Status {
-    NEW("new"), IN_PROGRESS("inProgress"), DONE("done");
+    NEW("НОВАЯ"),
+    IN_PROGRESS("В ПРОЦЕССЕ"),
+    DONE("ЗАКОНЧЕНА");
+
+
     private String translation;
 
     Status() {
@@ -11,11 +15,10 @@ public enum Status {
         this.translation = translation;
     }
 
-    public String getTranslation() {
-        return translation;
-    }
 
     public String toString() {
         return translation;
     }
+
+
 }

@@ -17,7 +17,6 @@ public class InMemoryTaskManager implements TaskManager {
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
 
-
     public int generateId() {
         return ++id;
     }
@@ -28,6 +27,11 @@ public class InMemoryTaskManager implements TaskManager {
         return historyManager.getHistory();
     }
 
+    //удаление из истории по айди
+    @Override
+    public void remove(int id) {
+        historyManager.remove(id);
+    }
 
     /* ------ Методы для создания ------ */
     // создание задачи
@@ -324,6 +328,5 @@ public class InMemoryTaskManager implements TaskManager {
                     '}');
         }
     }
-
 
 }

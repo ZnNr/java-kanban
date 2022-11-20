@@ -9,6 +9,8 @@ import java.util.List;
 public interface TaskManager {
     List<Task> getHistory();
 
+    void remove(int id);
+
     int createTask(Task task);
 
     int createEpic(Epic epic);

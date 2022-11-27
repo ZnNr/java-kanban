@@ -6,119 +6,125 @@ import tasks.Task;
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private static class CustomLinkedList {
-        private final Map<Integer, Node> table = new HashMap<>();
-        private Node head;
-        private Node tail;
 
-        private void linkLast(Task task) {
-            Node element = new Node();
-            element.setTask(task);
+    private static class Node {
+        Task value;
+        Node prev;
+        Node next;
 
-            if (table.containsKey(task.getId())) {
-                removeNode(table.get(task.getId()));
-            }
-
-            if (head == null) {
-                tail = element;
-                head = element;
-                element.setNext(null);
-                element.setPrev(null);
-            } else {
-                element.setPrev(tail);
-                element.setNext(null);
-                tail.setNext(element);
-                tail = element;
-            }
-
-            table.put(task.getId(), element);
+        private Node(Task task, Node next, Node prev) {
+            this.value = task;
+            this.next = next;
+            this.prev = prev;
         }
 
-        private List<Task> getTasks() {
-            List<Task> result = new ArrayList<>();
-            Node element = head;
-            while (element != null) {
-                result.add(element.getTask());
-                element = element.getNext();
-            }
-            return result;
-        }
-
-        private void removeNode(Node node) {
-            if (node != null) {
-                table.remove(node.getTask().getId());
-                Node prev = node.getPrev();
-                Node next = node.getNext();
-
-                if (head == node) {
-                    head = node.getNext();
-                }
-                if (tail == node) {
-                    tail = node.getPrev();
-                }
-
-                if (prev != null) {
-                    prev.setNext(next);
-                }
-
-                if (next != null) {
-                    next.setPrev(prev);
-                }
-            }
-        }
-
-        private Node getNode(int id) {
-            return table.get(id);
+        @Override
+        public String toString() {
+            return "Node:{" + value.toString() + "}";
         }
     }
 
-    private final CustomLinkedList list = new CustomLinkedList();
+    private Node head;
+    private Node last;
+    private int size;
+    private final Map<Integer, Node> nodeMap = new HashMap<>();
 
-    // Добавление нового просмотра задачи в историю
-    @Override
-    public void add(Task task) {
-        list.linkLast(task);
+    private List<Task> getTasks() {
+        List<Task> taskList = new ArrayList<>();
+        Node newHead = head;
+        while (newHead.next != null) {
+            taskList.add(newHead.value);
+            newHead = newHead.next;
+        }
+        taskList.add(newHead.value);
+        return taskList;
     }
 
-    // Удаление просмотра из истории
+    public void linkLast(Task task) {
+        final Node l = last;
+        final Node newNode = new Node(task, null, l);
+        last = newNode;
+        if (l == null)
+            head = newNode;
+        else
+            l.next = newNode;
+        size += 1;
+    }
+
+    public void removeFirst() {
+        if (getSize() == 0) {
+            throw new NoSuchElementException("История пока что пуста");
+        }
+        if (head == last) {
+            last = null;
+        } else {
+            head.next.prev = null;
+        }
+        head = head.next;
+        size -= 1;
+    }
+
+    public void removeLast() {
+        if (getSize() == 0) {
+            throw new NoSuchElementException("История пока что пуста");
+        }
+        if (head == last) {
+            head = null;
+            return;
+        } else {
+            last.prev.next = null;
+        }
+        last = last.prev;
+        size -= 1;
+    }
+
     @Override
     public void remove(int id) {
-        list.removeNode(list.getNode(id));
+        final Node node = nodeMap.remove(id);
+        if (node.prev == null) {
+            removeFirst();
+        } else if (node.next == null) {
+            removeLast();
+        } else {
+            node.next.prev = node.prev;
+            node.prev.next = node.next;
+            size -= 1;
+        }
     }
 
-    // Получение истории просмотров
     @Override
     public List<Task> getHistory() {
-        return list.getTasks();
-    }
-}
-
-class Node {
-    private Task task;
-    private Node prev;
-    private Node next;
-
-    public Node getNext() {
-        return next;
+        return getTasks();
     }
 
-    public Node getPrev() {
-        return prev;
+    @Override
+    public void add(Task task) {
+        if (nodeMap.containsKey(task.getId())) {
+            remove(task.getId());
+        }
+        if (checkSize()) {
+            removeFirst();
+        }
+        linkLast(task);
+        nodeMap.put(task.getId(), last);
     }
 
-    public Task getTask() {
-        return task;
+
+    public void removeAll() {
+        nodeMap.clear();
+        Node newNode = head;
+        while (newNode.next != null) {
+            head = null;
+            newNode = newNode.next;
+        }
     }
 
-    public void setNext(Node next) {
-        this.next = next;
+    private boolean checkSize() {
+        return size == 10;
     }
 
-    public void setPrev(Node prev) {
-        this.prev = prev;
+    public int getSize() {
+        return size;
     }
 
-    public void setTask(Task task) {
-        this.task = task;
-    }
 }

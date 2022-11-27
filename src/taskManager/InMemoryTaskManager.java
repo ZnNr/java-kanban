@@ -5,7 +5,15 @@ import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+import java.util.Collections;
+
+// добавил только те что нужны.. почему нельзя import java.util.* ???
+
+
 
 public class InMemoryTaskManager implements TaskManager {
     private static int id = 0;

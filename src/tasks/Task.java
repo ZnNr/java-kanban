@@ -2,7 +2,7 @@ package tasks;
 
 import status.Status;
 
-import java.util.*;
+import java.util.Objects;
 
 public class Task {
 
@@ -82,8 +82,7 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id && Objects.equals(description, task.description) && Objects.equals(title, task.title)
-                && status == task.status;
+        return id == task.id && Objects.equals(description, task.description) && Objects.equals(title, task.title) && status == task.status;
     }
 
     @Override
@@ -93,12 +92,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "description='" + description + '\'' +
-                ", id=" + id +
-                ", title='" + title + '\'' +
-                ", status=" + status +
-                '}';
+        return "Task{" + "description='" + description + '\'' + ", id=" + id + ", title='" + title + '\'' + ", status=" + status + '}';
     }
 
 

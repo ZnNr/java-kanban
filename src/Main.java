@@ -1,98 +1,112 @@
-// проверка с помощью консоли
 
-import taskManager.Managers;
-import taskManager.TaskManager;
+import taskManager.*;
 import status.Status;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 
-import java.util.List;
-/* Zinnur, привет. Как успехи ? Как настрой?
-Программа работает и улучшается!
-Нужно подправить архитектурно класс InMemoryHistoryManager и пару вопросов задал.
+import java.io.File;
+
+
+
+/*
+Помимо метода сохранения создайте статический метод static FileBackedTasksManager
+loadFromFile(File file), который будет восстанавливать данные менеджера из файла
+ при запуске программы. Не забудьте убедиться, что новый менеджер задач работает так же,
+ как предыдущий. И проверьте работу сохранения и восстановления менеджера из файла (сериализацию).
+Для этого
+1. создайте метод static void main(String[] args) в классе FileBackedTasksManager и реализуйте небольшой сценарий:
+
+2. Заведите несколько разных задач, эпиков и подзадач.
+3. Запросите некоторые из них, чтобы заполнилась история просмотра.
+4. Создайте новый FileBackedTasksManager менеджер из этого же файла.
+5. Проверьте, что история просмотра восстановилась верно и все задачи, эпики, подзадачи, которые были в старом, есть в новом менеджере.
+
+ Доброго времени суток! Не уверен что всё работает корректно, скорее всего беда с InMemoryHistoryManager, но я очень надеюсь на конструктивные комментарии!
+ Прошу прощения, что результат не финальный...
+ заранее огромное спасибо!
+
+ C:\Users\light\.jdks\openjdk-19.0.1\bin\java.exe "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.2.1\lib\idea_rt.jar=4481:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.2.1\bin" -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -classpath C:\Users\light\Documents\dev\java-kanban\out\production\java-kanban Main
+Лист Эпиков пустой
+Лист подзадачь пуст
+Exception in thread "main" java.lang.NullPointerException: Cannot read field "next" because "newHead" is null
+	at taskManager.InMemoryHistoryManager.getTasks(InMemoryHistoryManager.java:35)
+	at taskManager.InMemoryHistoryManager.getHistory(InMemoryHistoryManager.java:104)
+	at taskManager.InMemoryTaskManager.getHistory(InMemoryTaskManager.java:37)
+	at taskManager.FileBackedTasksManager.save(FileBackedTasksManager.java:158)
+	at taskManager.FileBackedTasksManager.createTask(FileBackedTasksManager.java:255)
+	at Main.main(Main.java:42)
+
+Process finished with exit code 1
+
+ Не смог решить за выходные..
+
+
  */
-/* Доброго времени суток! Настрой нормальный, успехи так себе...,
-ближе к новому году на основной работе завал, поэтому полноценно посидеть в Idea в будни возможности нет..\
-но стараюсь хотя бы теорию проходить, сложность конечно растет, и не всегда без подсказки выходит решить самостоятельные работы
-Спасибо за ревью и интересные комментарии!
- */
+
+
 public class Main {
-
     public static void main(String[] args) {
-        TaskManager taskManager = Managers.getManagerDefault();
+        // Спринт 6
 
 
-
-       /* Тестирование работы программы
-        После написания менеджера истории проверьте его работу:
-        создайте две задачи, эпик с тремя подзадачами и эпик без подзадач;
-        запросите созданные задачи несколько раз в разном порядке;
-        после каждого запроса выведите историю и убедитесь, что в ней нет повторов;
-        удалите задачу, которая есть в истории, и проверьте, что при печати она не будет выводиться;
-        удалите эпик с тремя подзадачами и убедитесь, что из истории удалился как сам эпик, так и все его подзадачи.
-        Интересного вам программирования! */
-
-        System.out.println("Проверка Истории");
-        System.out.println("-> Создадим задачи");
-        taskManager.createTask(new Task("задача-1 Купить Корм", "Task-1 Буба", Status.NEW)); //1
-        taskManager.createTask(new Task("задача-2 Купить Поводок", "Task-2 Пупа", Status.NEW)); //2
-        taskManager.printTasks();
-
-        System.out.println("-> Создадим Epic");
-        taskManager.createEpic(new Epic("Эп. Таска-1 Позаботитбся о Бубе", "Epic-1 - Буба", Status.NEW)); //3
-        taskManager.createEpic(new Epic("Эп. Таска-2 Позапотиться о Пупе", "Epic-2 - Пупа", Status.NEW)); //4
-        taskManager.printEpics();
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(new File("data.csv"));
 
 
-        System.out.println("Создадим Subtask");
-        taskManager.createSubtask(new Subtask("Описание под/зд-1 Бубы", "Subtask-1 Покормить Бубу", Status.NEW, 3)); //5
-        taskManager.createSubtask(new Subtask("Описание под/зд-2 Бубы", "Subtask-2 Выгулить Бубу", Status.NEW, 3)); //6
-        taskManager.createSubtask(new Subtask("Описание под/зд-3 Бубы", "Subtask-3 Вычесать Бубу", Status.NEW, 3)); //7
-        taskManager.printSubtasks();
+        Task task1 = new Task("Выгулить Бубу", "Буба-прогулка", Status.NEW);
+        Task task2 = new Task("Выгулить Грэма", "Грэм-прогулка", Status.NEW);
+
+        fileBackedTasksManager.createTask(task1);
+        fileBackedTasksManager.createTask(task2);
+
+        Epic epic1 = new Epic("Сдать модуль Java до жесткого дедлайна 26 декабря", "Дедлайн 26 декабря", Status.NEW);
+        fileBackedTasksManager.createEpic(epic1);
+
+        Subtask subtask11 = new Subtask("Сдать Спринт 6", "Спринт 6", Status.NEW, epic1.getId());
+        Subtask subtask12 = new Subtask("Сдать Спринт 7", "Спринт 7", Status.NEW, epic1.getId());
+        Subtask subtask13 = new Subtask("Сдать Спринт 8", "Спринт 8", Status.NEW, epic1.getId());
+        fileBackedTasksManager.createSubtask(subtask11);
+        fileBackedTasksManager.createSubtask(subtask12);
+        fileBackedTasksManager.createSubtask(subtask13);
 
 
-        System.out.println("-> Проверка корректности работы истории просмотров ");
-        System.out.println("-> Получение через id");
-        taskManager.getTaskById(1);
-        taskManager.getEpicById(3);
-        taskManager.getTaskById(2);
-        taskManager.getEpicById(3);
-        taskManager.getSubtaskById(5);
-        taskManager.getSubtaskById(6);
-        taskManager.getSubtaskById(5);
-        taskManager.getSubtaskById(6);
-        taskManager.getSubtaskById(7);
-        taskManager.getEpicById(4);
-        taskManager.getTaskById(1);
-        taskManager.getSubtaskById(5);
-        taskManager.getSubtaskById(5);
-        taskManager.getSubtaskById(6);
-        taskManager.getTaskById(1);
+        Epic epic2 = new Epic("Празднование новгого года", "Новый Год", Status.NEW);
+        fileBackedTasksManager.createEpic(epic2);
 
+        Subtask subtask21 = new Subtask("Купить подарки", "подарки", Status.NEW, epic2.getId());
+        Subtask subtask22 = new Subtask("Купить продукты на стол", "Праздничный стол", Status.NEW, epic2.getId());
+        Subtask subtask23 = new Subtask("Купить костюм", "Праздничный костюм", Status.NEW, epic2.getId());
+        fileBackedTasksManager.createSubtask(subtask21);
+        fileBackedTasksManager.createSubtask(subtask22);
+        fileBackedTasksManager.createSubtask(subtask23);
 
-        System.out.println("-----! Вызов метода getHistory !---");
-        List<Task> history = taskManager.getHistory();
-        System.out.println(history);
+        fileBackedTasksManager.getTaskById(task1.getId());
+        fileBackedTasksManager.getEpicById(epic2.getId());
+        fileBackedTasksManager.getAllSubtasks();
+        fileBackedTasksManager.getTaskById(task1.getId());
+        fileBackedTasksManager.getTaskById(task2.getId());
 
-        System.out.println("--- Удаление из истории ---");
-        taskManager.remove(1);
-        taskManager.deleteEpicById(3);
-        //вопрос:  почему ты используешь цифру 3, а не метод somEpic.getId() ?
-        //  не могу понять вопрос..удаляем конкретный эпик с конктретным id
-        //поэтому использую конкретный айди конкретного эпика, метода  somEpic.getId() у меня нет...
-        // имеется ввиду при создании эпика писать new Epiс1,new Epiс2 ? и удалять его deleteEpicById(Epic3.getId())
-        System.out.println("-----! просмотр после подчистки истории !---");
-        List<Task> historyAfterRemove = taskManager.getHistory();
-        System.out.println(historyAfterRemove);
-
-
-        //сейчас выводится в строчку, можем сделать вывод в столбик для большей наглядности?  типа :
-        //"History:
-        // форматирование строк и вывод в форматированном виде рассматриваентся в 6 спринте, мне бы пока что сдать 5...
+        FileBackedTasksManager fileBackedTasksManager2 = FileBackedTasksManager.loadFromFile(new File("data.csv"));
+        System.out.println("Задачи:");
+        System.out.println(fileBackedTasksManager2.getAllTasks());
+        System.out.println("Эпичные задачи:");
+        System.out.println(fileBackedTasksManager2.getAllEpics());
+        System.out.println("Подзадачи:");
+        System.out.println(fileBackedTasksManager2.getAllSubtasks());
+        System.out.println("История:");
+        System.out.println(fileBackedTasksManager2.getHistory());
 
 
     }
+
 }
+
+
+
+
+
+
+
+
 
 

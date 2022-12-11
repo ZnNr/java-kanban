@@ -7,21 +7,21 @@ import tasks.Task;
 
 import java.util.*;
 
-// добавил только те что нужны.. почему нельзя import java.util.* ???
+
 
 
 
 public class InMemoryTaskManager implements TaskManager {
     private static int id = 0;
     // таблицы для хранения данных
-    private final Map<Integer, Task> tasks = new HashMap<>();
-    private final Map<Integer, Subtask> subtasks = new HashMap<>();
-    private final Map<Integer, Epic> epics = new HashMap<>();
-
-    private final HistoryManager historyManager = Managers.getDefaultHistory();
-
+    final Map<Integer, Task> tasks = new HashMap<>();
+    final Map<Integer, Subtask> subtasks = new HashMap<>();
+    final Map<Integer, Epic> epics = new HashMap<>();
+    protected final HistoryManager historyManager = Managers.getDefaultHistory();
 
 
+
+    protected int nextId = 1;
 
     public int generateId() {
         return ++id;

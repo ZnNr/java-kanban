@@ -9,6 +9,9 @@ import java.io.File;
 
 
 
+
+
+
 /*
 Помимо метода сохранения создайте статический метод static FileBackedTasksManager
 loadFromFile(File file), который будет восстанавливать данные менеджера из файла
@@ -46,60 +49,87 @@ Process finished with exit code 1
 
 
 public class Main {
+    private static final File PATH_FILE = new File("resources/data.csv");
     public static void main(String[] args) {
         // Спринт 6
 
 
-        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(new File("data.csv"));
+            //---------------------------Создаем менеджер---------------------------------
 
 
+
+
+
+
+
+
+
+
+            TaskManager fileBackedTasksManager = Managers.getManagerDefault();
         Task task1 = new Task("Выгулить Бубу", "Буба-прогулка", Status.NEW);
         Task task2 = new Task("Выгулить Грэма", "Грэм-прогулка", Status.NEW);
-
-        fileBackedTasksManager.createTask(task1);
-        fileBackedTasksManager.createTask(task2);
-
+        Task task3 = new Task("Task3", "Description task3", Status.NEW);
         Epic epic1 = new Epic("Сдать модуль Java до жесткого дедлайна 26 декабря", "Дедлайн 26 декабря", Status.NEW);
-        fileBackedTasksManager.createEpic(epic1);
-
         Subtask subtask11 = new Subtask("Сдать Спринт 6", "Спринт 6", Status.NEW, epic1.getId());
         Subtask subtask12 = new Subtask("Сдать Спринт 7", "Спринт 7", Status.NEW, epic1.getId());
         Subtask subtask13 = new Subtask("Сдать Спринт 8", "Спринт 8", Status.NEW, epic1.getId());
-        fileBackedTasksManager.createSubtask(subtask11);
-        fileBackedTasksManager.createSubtask(subtask12);
-        fileBackedTasksManager.createSubtask(subtask13);
-
-
         Epic epic2 = new Epic("Празднование новгого года", "Новый Год", Status.NEW);
-        fileBackedTasksManager.createEpic(epic2);
-
         Subtask subtask21 = new Subtask("Купить подарки", "подарки", Status.NEW, epic2.getId());
         Subtask subtask22 = new Subtask("Купить продукты на стол", "Праздничный стол", Status.NEW, epic2.getId());
         Subtask subtask23 = new Subtask("Купить костюм", "Праздничный костюм", Status.NEW, epic2.getId());
+            //---------------------------Создаем задачи------------------------------------
+        fileBackedTasksManager.createTask(task1);
+        fileBackedTasksManager.createTask(task2);
+        fileBackedTasksManager.createTask(task3);
+        fileBackedTasksManager.createSubtask(subtask11);
+        fileBackedTasksManager.createSubtask(subtask12);
+        fileBackedTasksManager.createSubtask(subtask13);
+        fileBackedTasksManager.createEpic(epic1);
+        fileBackedTasksManager.createEpic(epic2);
         fileBackedTasksManager.createSubtask(subtask21);
         fileBackedTasksManager.createSubtask(subtask22);
         fileBackedTasksManager.createSubtask(subtask23);
 
+
+            //---------------------------Просматриваем задачи------------------------------
         fileBackedTasksManager.getTaskById(task1.getId());
         fileBackedTasksManager.getEpicById(epic2.getId());
         fileBackedTasksManager.getAllSubtasks();
         fileBackedTasksManager.getTaskById(task1.getId());
         fileBackedTasksManager.getTaskById(task2.getId());
-
-        FileBackedTasksManager fileBackedTasksManager2 = FileBackedTasksManager.loadFromFile(new File("data.csv"));
-        System.out.println("Задачи:");
-        System.out.println(fileBackedTasksManager2.getAllTasks());
-        System.out.println("Эпичные задачи:");
-        System.out.println(fileBackedTasksManager2.getAllEpics());
-        System.out.println("Подзадачи:");
-        System.out.println(fileBackedTasksManager2.getAllSubtasks());
-        System.out.println("История:");
-        System.out.println(fileBackedTasksManager2.getHistory());
-
-
+            //---------------------------Создаем новый менеджер----------------------------
+            FileBackedTasksManager newManager = FileBackedTasksManager.loadFromFile(PATH_FILE);
+            //------------------Выводим на экран задачи, созданные первым менеджером-------
+            System.out.println("Загружаем задачи...\n");
+            for (Task task : newManager.getAllTasks()) {
+                System.out.println(task);
+            }
+            for (Epic epic : newManager.getAllEpics()) {
+                System.out.println(epic);
+            }
+            for (Subtask subtask : newManager.getAllSubtasks()) {
+                System.out.println(subtask);
+            }
+            System.out.println();
+            System.out.println("Задачи загружены.\n");
+            //------------------Выводим на экран ID просмотренных задач---------------------
+            System.out.println();
+            System.out.println("Загружаем историю просмотров...\n");
+            for (Task task : newManager.getHistory()) {
+                System.out.println(task);
+            }
+            System.out.println();
+            System.out.println("История просмотров загружена.");
+        }
     }
 
-}
+
+
+
+
+
+
+
 
 
 

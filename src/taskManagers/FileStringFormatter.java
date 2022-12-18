@@ -1,20 +1,18 @@
-package taskManager;
+package taskManagers;
 
-
-import status.Status;
-import tasks.*;
-import taskManager.HistoryManager;
+import enumconstants.Status;
+import enumconstants.TaskType;
+import taskManagers.historyManaghers.HistoryManager;
+import taskType.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileStringFormatter {
 
-
     // Метод для сохранения истории в CSV
     static String historyToString(HistoryManager manager) {
         StringBuilder historyIds = new StringBuilder();
-
 
         if (manager.getHistory().isEmpty()) {
             return historyIds.append("0").toString();
@@ -28,7 +26,6 @@ public class FileStringFormatter {
         return historyIds.toString();
     }
 
-
     // Метод восстановления менеджера истории из CSV
     public static List<Integer> historyFromString(String value) {
         List<Integer> historyIds = new ArrayList<>();
@@ -40,7 +37,6 @@ public class FileStringFormatter {
 
         return historyIds;
     }
-
 
     private String getParentEpicId(Task task) {
         if (task instanceof Subtask) {
@@ -57,7 +53,6 @@ public class FileStringFormatter {
         }
         return TaskType.TASK;
     }
-
 
     // Метод сохранения задачи в строку
     public static String toString(Task task) {
@@ -82,7 +77,6 @@ public class FileStringFormatter {
         return String.join(",", id, type, name, status, description, epic) + System.lineSeparator();
     }
 
-
     //восстановление задачи из строки
     static Task fromString(String value) {
         String[] parts = value.split(",");
@@ -94,30 +88,24 @@ public class FileStringFormatter {
         String description = parts[4];
 
         switch (TaskType.valueOf(type)) {
-            case TASK -> {
+            case TASK: // стояло openjdk 19, исправил на amazon correto version 11.0.16, так же исправил swich
                 Task task = new Task(title, description, status);
                 task.setId(id);
                 task.setStatus(status);
                 return task;
-
-            }
-            case SUBTASK -> {
+            case SUBTASK:
                 int epicId = Integer.parseInt(parts[5]);
                 Subtask subtask = new Subtask(title, description, status, epicId);
                 subtask.setId(id);
                 subtask.setStatus(status);
                 return subtask;
-            }
-            case EPIC -> {
+            case EPIC:
                 Epic epic = new Epic(title, description, status);
                 epic.setId(id);
                 return epic;
-
-            }
         }
         return null;
     }
-
 
 }
 

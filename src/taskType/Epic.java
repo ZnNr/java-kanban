@@ -1,6 +1,6 @@
-package tasks;
+package taskType;
 
-import status.Status;
+import enumconstants.Status;
 
 import java.util.*;
 
@@ -50,6 +50,5 @@ public class Epic extends Task {
                 ", status=" + getStatus() +
                 '}';
     }
-
 
 }

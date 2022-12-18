@@ -1,12 +1,8 @@
 //спринт6
-package taskManager;
-
-import java.io.IOException;
-
+package taskManagers;
 
 public class ManagerSaveException extends RuntimeException {
     public ManagerSaveException(String message) {
         super(message);
     }
 }
-

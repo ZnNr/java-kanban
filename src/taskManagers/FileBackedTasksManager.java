@@ -1,10 +1,7 @@
 //спринт6
-package taskManager;
+package taskManagers;
 
-
-import status.Status;
-import tasks.*;
-
+import taskType.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -13,10 +10,34 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class FileBackedTasksManager extends InMemoryTaskManager {
     private static final File PATH_FILE = new File("resources/data.csv");
 
+    //сохранение
+    private void save() {
+        final String header = "id,type,name,status,description,epic";
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(PATH_FILE, StandardCharsets.UTF_8))) {
+
+            bw.write(header);
+            bw.write(System.lineSeparator());
+
+            for (Task tasks : getAllTasks()) {
+                bw.write(FileStringFormatter.toString(tasks));
+            }
+            for (Epic epics : getAllEpics()) {
+                bw.write(FileStringFormatter.toString(epics));
+            }
+            for (Subtask subtasks : getAllSubtasks()) {
+                bw.write(FileStringFormatter.toString(subtasks));
+            }
+
+            bw.write(System.lineSeparator());
+            bw.write(FileStringFormatter.historyToString(historyManager));
+
+        } catch (IOException exception) {
+            throw new ManagerSaveException("Не удалось записать файл");
+        }
+    }
 
     //загрузка Менеджера из файла
     public static FileBackedTasksManager loadFromFile(File file) {
@@ -80,38 +101,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             }
 
         } catch (IOException exception) {
-            throw new ManagerSaveException("Ошибка чтения файла");
+            throw new ManagerSaveException("Ошибка чтения файла:" + exception.getMessage());
         }
         return fileBackedTasksManager;
     }
-
-    //сохранение
-    private void save() {
-        final String header = "id,type,name,status,description,epic";
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(PATH_FILE, StandardCharsets.UTF_8))) {
-
-
-            bw.write(header);
-            bw.write(System.lineSeparator());
-
-            for (Task tasks : getAllTasks()) {
-                bw.write(FileStringFormatter.toString(tasks));
-            }
-            for (Epic epics : getAllEpics()) {
-                bw.write(FileStringFormatter.toString(epics));
-            }
-            for (Subtask subtasks : getAllSubtasks()) {
-                bw.write(FileStringFormatter.toString(subtasks));
-            }
-
-            bw.write(System.lineSeparator());
-            bw.write(FileStringFormatter.historyToString(historyManager));
-
-        } catch (IOException exception) {
-            throw new ManagerSaveException("Не удалось записать файл");
-        }
-    }
-
 
     @Override
     public int createTask(Task task) {
@@ -119,7 +112,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         save();
         return task.getId();
     }
-
 
     @Override
     public int createEpic(Epic epic) {
@@ -134,7 +126,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         save();
         return subtask.getId();
     }
-
 
     @Override
     public void deleteTaskById(int id) {
@@ -199,7 +190,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return subtask;
     }
 
-
     @Override
     public void updateTask(Task task) {
         super.updateTask(task);
@@ -212,11 +202,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         save();
     }
 
-
-
-
-
-    }
+}
 
 
 

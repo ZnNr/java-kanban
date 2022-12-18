@@ -1,4 +1,7 @@
-package taskManager;
+package taskManagers;
+
+import taskManagers.historyManaghers.HistoryManager;
+import taskManagers.historyManaghers.InMemoryHistoryManager;
 
 public class Managers {
     public static TaskManager getManagerDefault() {

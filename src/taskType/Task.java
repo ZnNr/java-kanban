@@ -1,6 +1,6 @@
-package tasks;
+package taskType;
 
-import status.Status;
+import enumconstants.Status;
 
 import java.util.Objects;
 
@@ -35,7 +35,6 @@ public class Task {
         this.id = id;
         this.description = description;
     }
-
 
     // получить название задачи
     public String getTitle() {
@@ -94,6 +93,5 @@ public class Task {
     public String toString() {
         return "Task{" + "description='" + description + '\'' + ", id=" + id + ", title='" + title + '\'' + ", status=" + status + '}';
     }
-
 
 }

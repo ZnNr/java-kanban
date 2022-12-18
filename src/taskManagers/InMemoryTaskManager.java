@@ -1,15 +1,12 @@
-package taskManager;
+package taskManagers;
 
-import status.Status;
-import tasks.Epic;
-import tasks.Subtask;
-import tasks.Task;
+import enumconstants.Status;
+import taskManagers.historyManaghers.HistoryManager;
+import taskType.Epic;
+import taskType.Subtask;
+import taskType.Task;
 
 import java.util.*;
-
-
-
-
 
 public class InMemoryTaskManager implements TaskManager {
     private static int id = 0;
@@ -18,8 +15,6 @@ public class InMemoryTaskManager implements TaskManager {
     final Map<Integer, Subtask> subtasks = new HashMap<>();
     final Map<Integer, Epic> epics = new HashMap<>();
     protected final HistoryManager historyManager = Managers.getDefaultHistory();
-
-
 
     protected int nextId = 1;
 
@@ -32,9 +27,10 @@ public class InMemoryTaskManager implements TaskManager {
     public HistoryManager getHistoryManager() {
         return historyManager;
     }
+
     @Override
     public List<Task> getHistory() {
-        return  historyManager.getHistory();
+        return historyManager.getHistory();
     }
 
     //удаление из истории по айди
@@ -42,9 +38,6 @@ public class InMemoryTaskManager implements TaskManager {
     public void remove(int id) {
         historyManager.remove(id);
     }
-
-
-
 
     public void addToHistory(int id) {
         if (epics.containsKey(id)) {
@@ -56,14 +49,6 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-
-
-
-
-
-
-
-
     /* ------ Методы для создания ------ */
     // создание задачи
     @Override
@@ -73,11 +58,6 @@ public class InMemoryTaskManager implements TaskManager {
         tasks.put(newTaskId, task);
         return newTaskId;
     }
-
-
-
-
-
 
     // создание эпической задачи
     @Override
@@ -180,18 +160,12 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteAllSubtasksByEpic(Epic epic) {
         if (epic != null) {
             for (int subtaskId : epic.getSubtaskIds()) {
-               subtasks.remove(subtaskId);
+                subtasks.remove(subtaskId);
                 historyManager.remove(subtaskId);
             }
             epic.getSubtaskIds().clear();
         }
     }
-
-
-
-
-
-
 
     /* ------ Методы для получения по ID---- */
     // получение задачи по id
@@ -200,8 +174,6 @@ public class InMemoryTaskManager implements TaskManager {
         historyManager.add(tasks.get(id));
         return tasks.get(id);
     }
-
-
 
     // получение эпика по id
     @Override
@@ -337,9 +309,6 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println("Список подзадачь пуст");
         }
     }
-
-
-
 
     /* ------ Методы для печати---- */
     // печать эпиков

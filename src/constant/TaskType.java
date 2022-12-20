@@ -1,5 +1,5 @@
 //спринт6
-package enumconstants;
+package constant;
 
 public enum TaskType {
     TASK,

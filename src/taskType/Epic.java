@@ -1,6 +1,6 @@
 package taskType;
 
-import enumconstants.Status;
+import constant.Status;
 
 import java.util.*;
 

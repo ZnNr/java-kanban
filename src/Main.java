@@ -1,4 +1,4 @@
-import enumconstants.Status;
+import constant.Status;
 import taskManagers.FileBackedTasksManager;
 import taskManagers.Managers;
 import taskManagers.TaskManager;
@@ -14,7 +14,7 @@ public class Main {
     public static void main(String[] args) {
         // Спринт 6
         //---------------------------Создаем менеджер---------------------------------
-        TaskManager fileBackedTasksManager = Managers.getManagerDefault();
+        TaskManager fileBackedTasksManager = Managers.getFileBacked(); // исправлено!
         //---------------------------Создаем задачи------------------------------------
         Task task1 = new Task("Выгулить Бубу", "Буба-прогулка", Status.NEW);
         Task task2 = new Task("Выгулить Грэма", "Грэм-прогулка", Status.NEW);
@@ -47,7 +47,8 @@ public class Main {
         fileBackedTasksManager.getTaskById(task2.getId());
         //---------------------------Создаем новый менеджер----------------------------
         FileBackedTasksManager newManager = FileBackedTasksManager.loadFromFile(PATH_FILE);
-        //------------------Выводим на экран задачи, созданные первым менеджером-------
+        //------------------Выводим на экран задачи, созданные  менеджером -------
+        System.out.println();
         System.out.println("Загружаем задачи...\n");
         for (Task task : newManager.getAllTasks()) {
             System.out.println(task);

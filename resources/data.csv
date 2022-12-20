@@ -1,4 +1,14 @@
-id,type,name,status,description,epic,duration,startTime,endTime
-1,EPIC,Epic,NEW,Description Epic,,PT0S,null,null
+id,type,name,status,description,epic
+1,TASK,Выгулить Бубу,NEW,Буба-прогулка,
+2,TASK,Выгулить Грэма,NEW,Грэм-прогулка,
+3,TASK,Task3,NEW,Description task3,
+4,EPIC,Сдать модуль Java до жесткого дедлайна 26 декабря,NEW,Дедлайн 26 декабря,
+8,EPIC,Празднование новгого года,NEW,Новый Год,
+5,SUBTASK,Сдать Спринт 6,NEW,Спринт 6,4
+6,SUBTASK,Сдать Спринт 7,NEW,Спринт 7,4
+7,SUBTASK,Сдать Спринт 8,NEW,Спринт 8,4
+9,SUBTASK,Купить подарки,NEW,подарки,8
+10,SUBTASK,Купить продукты на стол,NEW,Праздничный стол,8
+11,SUBTASK,Купить костюм,NEW,Праздничный костюм,8
 
-0
+8,1,2,

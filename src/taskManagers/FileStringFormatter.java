@@ -1,7 +1,7 @@
 package taskManagers;
 
-import enumconstants.Status;
-import enumconstants.TaskType;
+import constant.Status;
+import constant.TaskType;
 import taskManagers.historyManaghers.HistoryManager;
 import taskType.*;
 

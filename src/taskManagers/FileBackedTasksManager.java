@@ -5,14 +5,20 @@ import taskType.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.nio.file.Files;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
     private static final File PATH_FILE = new File("resources/data.csv");
 
+    /*    public FileBackedTasksManager(File file) {
+            super();
+        }
+    */
     //сохранение
     private void save() {
         final String header = "id,type,name,status,description,epic";
@@ -40,7 +46,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     //загрузка Менеджера из файла
-    public static FileBackedTasksManager loadFromFile(File file) {
+    public static FileBackedTasksManager loadFromFile(File file) throws ManagerSaveException {
+
+        if (!Files.exists(file.toPath())) {
+            System.err.println("Файла в папочке небыло, создан пустой FileBackedTasksManager");
+            return new FileBackedTasksManager();
+        } //проверка наличи файла
 
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager();
         Map<Integer, Task> allTasks = new HashMap<>();

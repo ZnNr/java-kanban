@@ -3,8 +3,12 @@ package taskManagers;
 import constant.Status;
 import constant.TaskType;
 import taskManagers.historyManaghers.HistoryManager;
-import taskType.*;
+import taskType.Epic;
+import taskType.Subtask;
+import taskType.Task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,23 +62,49 @@ public class FileStringFormatter {
     public static String toString(Task task) {
         String id = String.valueOf(task.getId());
         String type;
-        String name = task.getTitle();
+        String title = task.getTitle();
         String status = String.valueOf(task.getStatus());
-        String description = task.getDescription();
         String epic;
+        String description = task.getDescription();
+        String duration = task.getDuration().toString();
+        String startTime;
+        String endTime;
 
         if (task instanceof Epic) {
             type = TaskType.EPIC.name();
             epic = "";
+            if (task.getStartTime() != null && task.getEndTime() != null) {
+                startTime = task.getStartTime().toString();
+                endTime = task.getEndTime().toString();
+
+            } else {
+                startTime = "null";
+                endTime = "null";
+            }
         } else if (task instanceof Subtask) {
             type = TaskType.SUBTASK.name();
             epic = String.valueOf(((Subtask) task).getEpicId());
+            if (task.getStartTime() != null && task.getEndTime() != null) {
+                startTime = task.getStartTime().toString();
+                endTime = task.getEndTime().toString();
+
+            } else {
+                startTime = "null";
+                endTime = "null";
+            }
         } else {
             type = TaskType.TASK.name();
             epic = "";
-        }
+            if (task.getStartTime() != null && task.getEndTime() != null) {
+                startTime = task.getStartTime().toString();
+                endTime = task.getEndTime().toString();
 
-        return String.join(",", id, type, name, status, description, epic) + System.lineSeparator();
+            } else {
+                startTime = "null";
+                endTime = "null";
+            }
+        }
+        return String.join(",", id, type, title, status, description, epic, duration, startTime, endTime) + System.lineSeparator();
     }
 
     //восстановление задачи из строки
@@ -86,22 +116,37 @@ public class FileStringFormatter {
         String title = parts[2];
         Status status = Status.valueOf(parts[3]);
         String description = parts[4];
+        Duration duration = Duration.parse(parts[6]);
+        LocalDateTime taskStartTime;
+        LocalDateTime taskEndTime;
+        if (parts[7].equals("null") && parts[8].equals("null")) {
+            taskStartTime = null;
+            taskEndTime = null;
+        } else {
+            taskStartTime = LocalDateTime.parse(parts[7]);
+            taskEndTime = LocalDateTime.parse(parts[8]);
+        }
 
         switch (TaskType.valueOf(type)) {
-            case TASK: // стояло openjdk 19, исправил на amazon correto version 11.0.16, так же исправил swich
-                Task task = new Task(title, description, status);
+            case TASK:
+                Task task = new Task(title, description, duration, taskStartTime);
                 task.setId(id);
                 task.setStatus(status);
+                task.setEndTime(taskStartTime);
+
                 return task;
             case SUBTASK:
                 int epicId = Integer.parseInt(parts[5]);
-                Subtask subtask = new Subtask(title, description, status, epicId);
+                Subtask subtask = new Subtask(title, description, duration, taskStartTime);
                 subtask.setId(id);
                 subtask.setStatus(status);
+                subtask.setEndTime(taskEndTime);
                 return subtask;
             case EPIC:
-                Epic epic = new Epic(title, description, status);
+                Epic epic = new Epic(title, description);
                 epic.setId(id);
+                epic.setStatus(status);
+                epic.setEndTime(taskEndTime);
                 return epic;
         }
         return null;

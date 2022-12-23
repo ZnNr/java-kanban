@@ -5,6 +5,7 @@ import taskType.Subtask;
 import taskType.Task;
 
 import java.util.List;
+import java.util.Set;
 
 public interface TaskManager {
     List<Task> getHistory();
@@ -15,7 +16,7 @@ public interface TaskManager {
 
     int createEpic(Epic epic);
 
-    int createSubtask(Subtask subtask);
+    int createSubtask(Epic epic, Subtask subTask);
 
     void deleteTaskById(int id);
 
@@ -35,7 +36,7 @@ public interface TaskManager {
 
     Epic getEpicById(int id);
 
-    Subtask getSubtaskById();
+    Subtask getSubtaskById(int id);
 
     List<Task> getAllTasks();
 
@@ -52,6 +53,8 @@ public interface TaskManager {
     void updateStatusEpic(Epic epic);
 
     void updateSubtask(Subtask subtask);
+
+    Set<Task> getTasksPriorityTree();
 
     void printTasks();
 

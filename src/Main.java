@@ -1,17 +1,37 @@
-import constant.Status;
-import taskManagers.FileBackedTasksManager;
-import taskManagers.Managers;
-import taskManagers.TaskManager;
-import taskType.Epic;
-import taskType.Subtask;
-import taskType.Task;
+public class Main {      //Спринт 7 маин не нужен
+   /* private static final File PATH_FILE = new File("resources/data.csv");
 
-import java.io.File;
 
-public class Main {
-    private static final File PATH_FILE = new File("resources/data.csv");
+    protected void addTasks() {
+        Task task1 = new Task("Task1", "Description Task1",
+                Duration.ofMinutes(30), LocalDateTime.of(2022, 11, 15, 14, 0));
+
+        Task task2 = new Task("Task2", "Description Task2",
+                Duration.ofMinutes(60), LocalDateTime.of(2021, 1, 1, 8, 0));
+        manager.createTask(task1);
+        manager.createTask(task2);
+
+        Epic epic1 = new Epic("Epic1", "Description Epic1");
+        Epic epic2 = new Epic("Epic2", "Description Epic2");
+        Subtask subtask1 = new Subtask("Subtask1", "Description Subtask1",
+                Duration.ofMinutes(60), LocalDateTime.of(2020, 1, 2, 8, 0));
+        Subtask subtask2 = new Subtask("Subtask2", "Description Subtask2",
+                Duration.ofMinutes(60), LocalDateTime.of(2019, 1, 2, 8, 0));
+        Subtask subtask21 = new Subtask("Subtask21", "Description Subtask22",
+                Duration.ofMinutes(60), LocalDateTime.of(2020, 1, 2, 8, 0));
+        Subtask subtask22 = new Subtask("Subtask22", "Description Subtask22",
+                Duration.ofMinutes(60), LocalDateTime.of(2019, 1, 2, 8, 0));
+        manager.createEpic(epic1);
+        manager.createEpic(epic2);
+        manager.createSubtask(epic1, subtask1);
+        manager.createSubtask(epic1, subtask2);
+        manager.createSubtask(epic2, subtask21);
+        manager.createSubtask(epic2, subtask22);
+    }
+
 
     public static void main(String[] args) {
+
         // Спринт 6
         //---------------------------Создаем менеджер---------------------------------
         TaskManager fileBackedTasksManager = Managers.getFileBacked(); // исправлено!
@@ -69,5 +89,5 @@ public class Main {
         }
         System.out.println();
         System.out.println("История просмотров загружена.");
-    }
+    }*/
 }

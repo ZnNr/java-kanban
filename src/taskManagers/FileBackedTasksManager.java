@@ -5,7 +5,6 @@ import taskType.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +20,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     */
     //сохранение
     private void save() {
-        final String header = "id,type,name,status,description,epic";
+        final String header = "id,type,name,status,description,startTime,duration,epic";
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(PATH_FILE, StandardCharsets.UTF_8))) {
 
             bw.write(header);
@@ -98,8 +97,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     }
                     allTasks.put(task.getId(), task);
 
-                    Epic epicToConnectSubTasks = fileBackedTasksManager.epics.get(((Subtask) task).getEpicId());
-                    epicToConnectSubTasks.getSubtaskIds().add(task.getId());
+                    Epic epicToSubtasksConnection = fileBackedTasksManager.epics.get(((Subtask) task).getEpicId());
+                    epicToSubtasksConnection.getSubtaskIds().add(task.getId());
 
                 } else {
                     fileBackedTasksManager.tasks.put(task.getId(), task);
@@ -132,8 +131,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public int createSubtask(Subtask subtask) {
-        super.createSubtask(subtask);
+    public int createSubtask(Epic testEpic, Subtask subtask) {
+        super.createSubtask(testEpic, subtask);
         save();
         return subtask.getId();
     }
@@ -195,8 +194,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public Subtask getSubtaskById() {
-        Subtask subtask = super.getSubtaskById();
+    public Subtask getSubtaskById(int id) {
+        Subtask subtask = super.getSubtaskById(id);
         save();
         return subtask;
     }

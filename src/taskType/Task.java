@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
-    protected int id;// id задачи
+    protected int id = 1;// id задачи
     protected String title; // краткое название задачи
     protected String description; // описание задачи
     protected Status status; // статус - "NEW", "IN_PROGRESS", "DONE"
@@ -22,15 +22,6 @@ public class Task {
         this.duration = Duration.ofMinutes(0);
     }
 
-    /*
-        public Task(String title, String description, Status status, Duration duration, LocalDateTime startTime) {
-            this.title = title;
-            this.description = description;
-            this.status = status;
-            this.startTime = startTime;
-            this.duration = duration;
-        }
-    */
     public Task(String title, String description) {
         this.title = title;
         this.description = description;
@@ -46,14 +37,14 @@ public class Task {
         this.startTime = startTime;
     }
 
-    // установить id задачи
-    public void setId(int id) {
-        this.id = id;
-    }
-
     // получить id задачи
     public int getId() {
         return id;
+    }
+
+    // установить id задачи
+    public void setId(int id) {
+        this.id = id;
     }
 
     // задать название задачи

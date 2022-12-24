@@ -1,26 +1,24 @@
 //спринт6
 package taskManagers;
 
-import taskType.*;
+import taskType.Epic;
+import taskType.Subtask;
+import taskType.Task;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.nio.file.Files;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
     private static final File PATH_FILE = new File("resources/data.csv");
 
-    /*    public FileBackedTasksManager(File file) {
-            super();
-        }
-    */
     //сохранение
     private void save() {
-        final String header = "id,type,name,status,description,startTime,duration,epic";
+        final String header = "id,type,title,status,description,epic,duration,startTime,endTime";
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(PATH_FILE, StandardCharsets.UTF_8))) {
 
             bw.write(header);
@@ -50,7 +48,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         if (!Files.exists(file.toPath())) {
             System.err.println("Файла в папочке небыло, создан пустой FileBackedTasksManager");
             return new FileBackedTasksManager();
-        } //проверка наличи файла
+        } //проверка наличия файла
 
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager();
         Map<Integer, Task> allTasks = new HashMap<>();
@@ -131,8 +129,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public int createSubtask(Epic testEpic, Subtask subtask) {
-        super.createSubtask(testEpic, subtask);
+    public int createSubtask(Epic epic, Subtask subtask) {
+        super.createSubtask(epic, subtask);
         save();
         return subtask.getId();
     }
@@ -212,24 +210,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         save();
     }
 
+    @Override
+    public void updateSubtask(Subtask subtask) {
+        super.updateSubtask(subtask);
+        save();
+    }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

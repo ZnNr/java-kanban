@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 abstract class TaskManagerTest<T extends TaskManager> {
 
-    protected static final int FAKE_ID = -100;
+    protected static final int FAKE_ID = -999;
     protected T manager;
 
     @Test
@@ -33,7 +33,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         Epic epic1 = new Epic("Epic1", "Description Epic1");
         Epic epic2 = new Epic("Epic2", "Description Epic2");
         Subtask subtask1 = new Subtask("Subtask1", "Description Subtask1",
-                Duration.ofMinutes(60), LocalDateTime.of(2022, 1, 2, 8, 0));
+                Duration.ofMinutes(60), LocalDateTime.of(2021, 1, 2, 8, 0));
         Subtask subtask2 = new Subtask("Subtask2", "Description Subtask2",
                 Duration.ofMinutes(60), LocalDateTime.of(2022, 1, 2, 8, 0));
         manager.createEpic(epic1);
@@ -192,17 +192,17 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void shouldReturnSubtask() {
         Epic epic1 = new Epic("Epic1", "Description Epic1");
-        Subtask subtask1 = new Subtask("Subtask1", "Description SubTask1",
+        Subtask subtask1 = new Subtask("Subtask1", "Description Subtask1",
                 Duration.ofMinutes(60), LocalDateTime.of(2022, 1, 2, 10, 0));
-        Subtask subtask2 = new Subtask("Subtask2", "Description SubTask2",
+        Subtask subtask2 = new Subtask("Subtask2", "Description Subtask2",
                 Duration.ofMinutes(60), LocalDateTime.of(2022, 1, 2, 8, 0));
 
         manager.createEpic(epic1);
         manager.createSubtask(epic1, subtask1);
         manager.createSubtask(epic1, subtask2);
 
-        assertEquals(subtask1, manager.getAllSubtasksByEpicId(subtask1.getId()));
-        assertNotEquals(subtask1, manager.getAllSubtasksByEpicId(subtask2.getId()));
+        assertEquals(subtask1, manager.getSubtaskById(subtask1.getId()));
+        assertNotEquals(subtask1, manager.getSubtaskById(subtask2.getId()));
     }
 
     @Test
@@ -282,8 +282,8 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
         manager.updateEpic(epic1);
 
-        assertEquals("New Epic", manager.getEpicById(1).getTitle());
-        assertEquals(Status.IN_PROGRESS, manager.getEpicById(1).getStatus());
+        assertEquals("New Epic", manager.getEpicById(epic1.getId()).getTitle());
+        assertEquals(Status.IN_PROGRESS, manager.getEpicById(epic1.getId()).getStatus());
     }
 
     @Test
@@ -324,8 +324,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void shouldRemoveTask() {
-        Task task1 = new Task("Task1", "Description Task1");
+    void shouldDeleteTask() {
+        Task task1 = new Task("Task1", "Description Task1",
+                Duration.ofMinutes(60), LocalDateTime.of(2021, 1, 1, 8, 0));
         Task task2 = new Task("Task2", "Description Task2",
                 Duration.ofMinutes(60), LocalDateTime.of(2022, 1, 1, 8, 0));
 
@@ -335,12 +336,6 @@ abstract class TaskManagerTest<T extends TaskManager> {
         manager.getTaskById(task1.getId());
 
         manager.deleteTaskById(task1.getId());
-
-        final NullPointerException exception = assertThrows(
-                NullPointerException.class,
-                () -> manager.deleteTaskById(FAKE_ID));
-
-        assertNull(exception.getMessage());
 
         manager.deleteTaskById(task2.getId());
 
@@ -360,12 +355,6 @@ abstract class TaskManagerTest<T extends TaskManager> {
         manager.getEpicById(epic1.getId());
 
         manager.deleteEpicById(epic1.getId());
-
-        final NullPointerException exception = assertThrows(
-                NullPointerException.class,
-                () -> manager.deleteEpicById(FAKE_ID));
-
-        assertNull(exception.getMessage());
 
         manager.deleteEpicById(epic2.getId());
 
@@ -391,12 +380,6 @@ abstract class TaskManagerTest<T extends TaskManager> {
         manager.getSubtaskById(subtask2.getId());
 
         manager.deleteSubtaskById(subtask1.getId());
-
-        final NullPointerException exception = assertThrows(
-                NullPointerException.class,
-                () -> manager.deleteSubtaskById(FAKE_ID));
-
-        assertNull(exception.getMessage());
 
         manager.deleteSubtaskById(subtask2.getId());
 

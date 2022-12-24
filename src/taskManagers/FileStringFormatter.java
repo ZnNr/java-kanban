@@ -42,22 +42,6 @@ public class FileStringFormatter {
         return historyIds;
     }
 
-    private String getParentEpicId(Task task) {
-        if (task instanceof Subtask) {
-            return Integer.toString(((Subtask) task).getEpicId());
-        }
-        return "";
-    }
-
-    private TaskType getType(Task task) {
-        if (task instanceof Epic) {
-            return TaskType.EPIC;
-        } else if (task instanceof Subtask) {
-            return TaskType.SUBTASK;
-        }
-        return TaskType.TASK;
-    }
-
     // Метод сохранения задачи в строку
     public static String toString(Task task) {
         String id = String.valueOf(task.getId());
@@ -138,6 +122,7 @@ public class FileStringFormatter {
             case SUBTASK:
                 int epicId = Integer.parseInt(parts[5]);
                 Subtask subtask = new Subtask(title, description, duration, taskStartTime);
+                subtask.setEpicId(epicId);
                 subtask.setId(id);
                 subtask.setStatus(status);
                 subtask.setEndTime(taskEndTime);
@@ -153,7 +138,3 @@ public class FileStringFormatter {
     }
 
 }
-
-
-
-

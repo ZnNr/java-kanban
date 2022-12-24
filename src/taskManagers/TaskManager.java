@@ -10,13 +10,11 @@ import java.util.Set;
 public interface TaskManager {
     List<Task> getHistory();
 
-    void remove(int id);
-
     int createTask(Task task);
 
     int createEpic(Epic epic);
 
-    int createSubtask(Epic epic, Subtask subTask);
+    int createSubtask(Epic epic, Subtask subtask);
 
     void deleteTaskById(int id);
 
@@ -44,21 +42,14 @@ public interface TaskManager {
 
     List<Subtask> getAllSubtasks();
 
-    List<Subtask> getAllSubtasksByEpicId(int id);
+    List<Subtask> getAllSubtasksByEpicId(Epic epic);
 
     void updateTask(Task task);
 
     void updateEpic(Epic epic);
 
-    void updateStatusEpic(Epic epic);
-
     void updateSubtask(Subtask subtask);
 
     Set<Task> getTasksPriorityTree();
 
-    void printTasks();
-
-    void printEpics();
-
-    void printSubtasks();
 }

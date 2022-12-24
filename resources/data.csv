@@ -1,6 +1,4 @@
-id,type,name,status,description,startTime,duration,epic
-0,EPIC,Epic1,NEW,Description Epic1,,PT3H,2022-01-02T08:00,2022-01-02T11:00
-1,SUBTASK,Subtask1,NEW,Description Subtask1,0,PT1H,2022-01-02T10:00,2022-01-02T11:00
-2,SUBTASK,Subtask2,NEW,Description Subtask2,0,PT1H,2022-01-02T08:00,2022-01-02T09:00
+id,type,title,status,description,epic,duration,startTime,endTime
+1,EPIC,Epic,NEW,Description Epic,,PT0S,null,null
 
 0

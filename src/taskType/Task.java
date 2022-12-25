@@ -11,23 +11,9 @@ public class Task {
     protected String title; // краткое название задачи
     protected String description; // описание задачи
     protected Status status; // статус - "NEW", "IN_PROGRESS", "DONE"
-    protected LocalDateTime startTime; // время начала
     protected Duration duration; // продолжительность
+    protected LocalDateTime startTime; // время начала
     protected LocalDateTime endTime;
-
-    public Task(String title, String description, Status status, Duration duration, LocalDateTime startTime) {
-        this.title = title;
-        this.description = description;
-        this.status = status;
-        this.duration = Duration.ofMinutes(0);
-    }
-
-    public Task(String title, String description) {
-        this.title = title;
-        this.description = description;
-        this.status = Status.NEW;
-        this.duration = Duration.ofMinutes(0);
-    }
 
     public Task(String title, String description, Duration duration, LocalDateTime startTime) {
         this.title = title;
@@ -37,6 +23,22 @@ public class Task {
         this.startTime = startTime;
     }
 
+    public Task(String title, String description) {
+        this.title = title;
+        this.description = description;
+        this.status = Status.NEW;
+        this.duration = Duration.ofMinutes(0);
+    }
+
+    /*
+        public Task(String title, String description, Duration duration, LocalDateTime startTime) {
+            this.title = title;
+            this.description = description;
+            this.status = Status.NEW;
+            this.duration = duration;
+            this.startTime = startTime;
+        }
+    */
     // получить id задачи
     public int getId() {
         return id;

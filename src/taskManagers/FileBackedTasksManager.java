@@ -17,7 +17,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     private static final File PATH_FILE = new File("resources/data.csv");
 
     //сохранение
-    private void save() {
+    protected void save() {
         final String header = "id,type,title,status,description,epic,duration,startTime,endTime";
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(PATH_FILE, StandardCharsets.UTF_8))) {
 

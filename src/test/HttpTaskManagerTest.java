@@ -1,12 +1,15 @@
 package test;
 
-import http.*;
+import taskType.Epic;
+import taskType.Subtask;
+import taskType.Task;
+import manager.Managers;
+import manager.http.HttpTaskManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import taskManagers.*;
-import taskType.*;
+import manager.http.KVServer;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -34,15 +37,15 @@ class HttpTaskManagerTest {
 
     @BeforeEach
     public void beforeEach() {
-        manager = (HttpTaskManager) Managers.getHTTPManager();
+        manager = (HttpTaskManager) Managers.getDefault();
 
         task1 = new Task("Task1", "Description Task1");
         task2 = new Task("Task2", "Description Task2");
         epic1 = new Epic("Epic1", "Description Epic1");
         subtask1 = new Subtask("Subtask1", "Description Subtask1",
-                Duration.ofMinutes(60), LocalDateTime.of(2022, 1, 2, 10, 0, 0));
+                Duration.ofMinutes(60), LocalDateTime.of(2022, 1, 2, 10, 0));
         subtask2 = new Subtask("Subtask2", "Description Subtask2",
-                Duration.ofMinutes(60), LocalDateTime.of(2022, 1, 2, 8, 0,0));
+                Duration.ofMinutes(60), LocalDateTime.of(2022, 1, 2, 8, 0));
     }
 
     @Test
@@ -53,7 +56,7 @@ class HttpTaskManagerTest {
 
         manager.deleteTaskById(task1.getId());
 
-        manager = (HttpTaskManager) Managers.getHTTPManager();
+        manager = (HttpTaskManager) Managers.getDefault();
 
         assertEquals(List.of(), manager.getAllTasks());
     }
@@ -64,7 +67,7 @@ class HttpTaskManagerTest {
 
         manager.createEpic(epic1);
 
-        manager = (HttpTaskManager) Managers.getHTTPManager();
+        manager = (HttpTaskManager) Managers.getDefault();
         manager.loadFromServer();
 
         assertEquals(epicList.size(), manager.getAllEpics().size());
@@ -84,7 +87,7 @@ class HttpTaskManagerTest {
         assertEquals(2, manager.getHistory().size());
 
         manager.deleteAllTasks();
-        manager = (HttpTaskManager) Managers.getHTTPManager();
+        manager = (HttpTaskManager) Managers.getDefault();
 
         assertEquals(0, manager.getAllTasks().size());
         assertEquals(0, manager.getHistory().size());
@@ -101,7 +104,7 @@ class HttpTaskManagerTest {
         assertFalse(manager.getAllEpics().isEmpty());
         assertFalse(manager.getAllSubtasks().isEmpty());
 
-        manager = (HttpTaskManager) Managers.getHTTPManager();
+        manager = (HttpTaskManager) Managers.getDefault();
 
         assertTrue(manager.getAllTasks().isEmpty());
         assertTrue(manager.getAllEpics().isEmpty());

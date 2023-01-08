@@ -7,106 +7,83 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
-    protected int id = 1;// id задачи
-    protected String title; // краткое название задачи
-    protected String description; // описание задачи
-    protected Status status; // статус - "NEW", "IN_PROGRESS", "DONE"
-    protected Duration duration; // продолжительность
-    protected LocalDateTime startTime; // время начала
+    protected int id;
+    protected String name;
+    protected String description;
+    protected Status status;
+    protected Duration duration;
+    protected LocalDateTime startTime;
     protected LocalDateTime endTime;
 
-    public Task(String title, String description, Duration duration, LocalDateTime startTime) {
-        this.title = title;
-        this.description = description;
-        this.status = Status.NEW;
-        this.duration = duration;
-        this.startTime = startTime;
-    }
-
-    public Task(String title, String description) {
-        this.title = title;
+    public Task(String name, String description) {
+        this.name = name;
         this.description = description;
         this.status = Status.NEW;
         this.duration = Duration.ofMinutes(0);
     }
 
-    /*
-        public Task(String title, String description, Duration duration, LocalDateTime startTime) {
-            this.title = title;
-            this.description = description;
-            this.status = Status.NEW;
-            this.duration = duration;
-            this.startTime = startTime;
-        }
-    */
-    // получить id задачи
+    public Task(String name, String description, Duration duration, LocalDateTime startTime) {
+        this.name = name;
+        this.description = description;
+        this.status = Status.NEW;
+        this.duration = duration;
+        this.startTime = startTime;
+    }
+
     public int getId() {
         return id;
     }
 
-    // установить id задачи
     public void setId(int id) {
         this.id = id;
     }
 
-    // задать название задачи
-    public void setTitle(String title) {
-        this.title = title;
+    public String getName() {
+        return name;
     }
 
-    // получить название задачи
-    public String getTitle() {
-        return title;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    // задать описание задачи
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    // получить описание задачи
     public String getDescription() {
         return description;
     }
 
-    // задать статус задачи
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    // получить статус задачи
     public Status getStatus() {
         return status;
     }
 
-    //установить время начала
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
-    //установить время завершения
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
+    public Duration getDuration() {
+        return duration;
     }
 
-    //получить время завершения
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-
-    // получить время начала
     public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    //установить продолжительность
     public void setDuration(Duration duration) {
         this.duration = duration;
     }
 
-    //получить продолжительность
-    public Duration getDuration() {
-        return duration;
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     @Override
@@ -114,24 +91,19 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id
-                && Objects.equals(title, task.title)
-                && Objects.equals(description, task.description)
-                && status == task.status && Objects.equals(duration, task.duration)
-                && Objects.equals(startTime, task.startTime)
-                && Objects.equals(endTime, task.endTime);
+        return id == task.id && Objects.equals(name, task.name) && Objects.equals(description, task.description) && status == task.status && Objects.equals(duration, task.duration) && Objects.equals(startTime, task.startTime) && Objects.equals(endTime, task.endTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, status, duration, startTime, endTime);
+        return Objects.hash(id, name, description, status, duration, startTime, endTime);
     }
 
     @Override
     public String toString() {
         return "Task{" +
                 "id=" + id +
-                ", title='" + title + '\'' +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 ", duration=" + duration +
@@ -139,5 +111,4 @@ public class Task {
                 ", endTime=" + endTime +
                 '}';
     }
-
 }

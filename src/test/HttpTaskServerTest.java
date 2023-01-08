@@ -1,28 +1,33 @@
 package test;
 
 import com.google.gson.Gson;
-import http.HttpTaskServer;
-import http.KVServer;
+import com.google.gson.reflect.TypeToken;
+import taskType.Epic;
+import taskType.Subtask;
+import taskType.Task;
+import manager.task.TaskManager;
+import manager.http.HttpTaskServer;
+import manager.http.KVServer;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import taskManagers.TaskManager;
-import taskType.Epic;
-import taskType.Subtask;
-import taskType.Task;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class HttpTaskServerTest {
+
     private KVServer kvServer;
     private HttpTaskServer httpTaskServer;
 
@@ -61,7 +66,7 @@ class HttpTaskServerTest {
         httpTaskServer = new HttpTaskServer();
         httpTaskServer.start();
 
-        manager = httpTaskServer.getHttpManager();
+        manager = httpTaskServer.getManager();
     }
 
     @AfterEach
@@ -69,7 +74,7 @@ class HttpTaskServerTest {
         kvServer.stop();
         httpTaskServer.stop();
     }
-/* тест пока не работает
+
     @Test
     void shouldCheckPostMethod() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
@@ -108,7 +113,7 @@ class HttpTaskServerTest {
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(404, response.statusCode());
     }
-*/
+
     @Test
     void shouldCheckGetMethod() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
@@ -155,7 +160,7 @@ class HttpTaskServerTest {
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(404, response.statusCode());
     }
-/* тест пока не работает
+
     @Test
     void shouldCheckGetMethodById() throws IOException, InterruptedException {
         createAllTask();
@@ -192,9 +197,9 @@ class HttpTaskServerTest {
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response.statusCode());
 
-        Subtask subTaskForCheck = manager.getSubtaskById(3);
-        Subtask subTaskFromResponse = gson.fromJson(response.body(), Subtask.class);
-        assertEquals(subTaskForCheck, subTaskFromResponse);
+        Subtask subtaskForCheck = manager.getSubtaskById(3);
+        Subtask subtaskFromResponse = gson.fromJson(response.body(), Subtask.class);
+        assertEquals(subtaskForCheck, subtaskFromResponse);
 
         request = HttpRequest.newBuilder()
                 .uri(URI.create(url + "/tasks/subtask/epic?id=2"))
@@ -207,9 +212,9 @@ class HttpTaskServerTest {
         Type typeToken = new TypeToken<List<Subtask>>() {
         }.getType();
 
-        List<Subtask> allSubTaskForCheck = manager.getAllSubtasksByEpicId(manager.getEpicById(2));
-        List<Subtask> allSubTaskFromResponse = gson.fromJson(response.body(), typeToken);
-        assertEquals(allSubTaskForCheck.size(), allSubTaskFromResponse.size());
+        List<Subtask> allSubtaskForCheck = manager.getAllSubtasksByEpicId(manager.getEpicById(2));
+        List<Subtask> allSubtaskFromResponse = gson.fromJson(response.body(), typeToken);
+        assertEquals(allSubtaskForCheck.size(), allSubtaskFromResponse.size());
 
         request = HttpRequest.newBuilder()
                 .uri(URI.create(url + "/tasks/task?id=" + FAKE_ID))
@@ -220,7 +225,6 @@ class HttpTaskServerTest {
         assertEquals(400, response.statusCode());
     }
 
-//тест пока не работает
     @Test
     void shouldCheckGetMethodFromHistory() throws IOException, InterruptedException {
         createHistory();
@@ -235,7 +239,7 @@ class HttpTaskServerTest {
         assertFalse(manager.getHistory().isEmpty());
 
     }
-*/
+
     @Test
     void shouldCheckDeleteMethod() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
@@ -282,7 +286,7 @@ class HttpTaskServerTest {
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(404, response.statusCode());
     }
-/*тест не работает
+
     @Test
     void shouldCheckDeleteMethodById() throws IOException, InterruptedException {
         createAllTask();
@@ -384,5 +388,4 @@ class HttpTaskServerTest {
 
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
     }
-*/
 }

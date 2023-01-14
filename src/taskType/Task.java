@@ -8,22 +8,22 @@ import java.util.Objects;
 
 public class Task {
     protected int id;
-    protected String name;
+    protected String title;
     protected String description;
     protected Status status;
     protected Duration duration;
     protected LocalDateTime startTime;
     protected LocalDateTime endTime;
 
-    public Task(String name, String description) {
-        this.name = name;
+    public Task(String title, String description) {
+        this.title = title;
         this.description = description;
         this.status = Status.NEW;
         this.duration = Duration.ofMinutes(0);
     }
 
-    public Task(String name, String description, Duration duration, LocalDateTime startTime) {
-        this.name = name;
+    public Task(String title, String description, Duration duration, LocalDateTime startTime) {
+        this.title = title;
         this.description = description;
         this.status = Status.NEW;
         this.duration = duration;
@@ -38,12 +38,12 @@ public class Task {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -91,19 +91,19 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id && Objects.equals(name, task.name) && Objects.equals(description, task.description) && status == task.status && Objects.equals(duration, task.duration) && Objects.equals(startTime, task.startTime) && Objects.equals(endTime, task.endTime);
+        return id == task.id && Objects.equals(title, task.title) && Objects.equals(description, task.description) && status == task.status && Objects.equals(duration, task.duration) && Objects.equals(startTime, task.startTime) && Objects.equals(endTime, task.endTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, status, duration, startTime, endTime);
+        return Objects.hash(id, title, description, status, duration, startTime, endTime);
     }
 
     @Override
     public String toString() {
         return "Task{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 ", duration=" + duration +

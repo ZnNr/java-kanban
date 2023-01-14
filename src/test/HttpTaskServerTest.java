@@ -2,6 +2,7 @@ package test;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import manager.http.endPoints;
 import taskType.Epic;
 import taskType.Subtask;
 import taskType.Task;
@@ -78,7 +79,7 @@ class HttpTaskServerTest {
     @Test
     void shouldCheckPostMethod() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/task"))
+                .uri(URI.create(url + "/" + endPoints.taskKey))
                 .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(task1)))
                 .build();
 
@@ -87,7 +88,7 @@ class HttpTaskServerTest {
         assertEquals(1, manager.getAllTasks().size());
 
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/epic"))
+                .uri(URI.create(url + "/" + endPoints.epicKey))
                 .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(epic1)))
                 .build();
 
@@ -96,7 +97,7 @@ class HttpTaskServerTest {
         assertEquals(1, manager.getAllEpics().size());
 
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/subtask"))
+                .uri(URI.create(url + "/" + endPoints.subtaskKey))
                 .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(subtask1)))
                 .build();
 
@@ -117,16 +118,16 @@ class HttpTaskServerTest {
     @Test
     void shouldCheckGetMethod() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks"))
+                .uri(URI.create(url + "/" + endPoints.tasksKey))
                 .GET()
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        assertEquals(200, response.statusCode());
+        assertEquals(404, response.statusCode());
         assertTrue(manager.getTasksPriorityTree().isEmpty());
 
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/task"))
+                .uri(URI.create(url + "/" + endPoints.taskKey))
                 .GET()
                 .build();
 
@@ -135,7 +136,7 @@ class HttpTaskServerTest {
         assertTrue(manager.getAllTasks().isEmpty());
 
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/epic"))
+                .uri(URI.create(url + "/" + endPoints.epicKey))
                 .GET()
                 .build();
 
@@ -144,7 +145,7 @@ class HttpTaskServerTest {
         assertTrue(manager.getAllEpics().isEmpty());
 
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/subtask"))
+                .uri(URI.create(url + "/" + endPoints.subtaskKey))
                 .GET()
                 .build();
 
@@ -166,7 +167,7 @@ class HttpTaskServerTest {
         createAllTask();
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/task?id=1"))
+                .uri(URI.create(url + "/" + endPoints.taskKey + "?id=1"))
                 .GET()
                 .build();
 
@@ -178,7 +179,7 @@ class HttpTaskServerTest {
         assertEquals(taskForCheck, taskFromResponse);
 
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/epic?id=2"))
+                .uri(URI.create(url + "/" + endPoints.epicKey + "?id=2"))
                 .GET()
                 .build();
 
@@ -190,7 +191,7 @@ class HttpTaskServerTest {
         assertEquals(epicForCheck, epicFromResponse);
 
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/subtask?id=3"))
+                .uri(URI.create(url + "/" + endPoints.subtaskKey + "?id=3"))
                 .GET()
                 .build();
 
@@ -202,7 +203,7 @@ class HttpTaskServerTest {
         assertEquals(subtaskForCheck, subtaskFromResponse);
 
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/subtask/epic?id=2"))
+                .uri(URI.create(url + "/" + endPoints.subtaskEpicKey + "?id=2"))
                 .GET()
                 .build();
 
@@ -217,7 +218,7 @@ class HttpTaskServerTest {
         assertEquals(allSubtaskForCheck.size(), allSubtaskFromResponse.size());
 
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/task?id=" + FAKE_ID))
+                .uri(URI.create(url + "/" + endPoints.taskKey + "?id=" + FAKE_ID))
                 .GET()
                 .build();
 
@@ -230,7 +231,7 @@ class HttpTaskServerTest {
         createHistory();
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/history"))
+                .uri(URI.create(url + "/" + endPoints.historyKey))
                 .GET()
                 .build();
 
@@ -243,16 +244,16 @@ class HttpTaskServerTest {
     @Test
     void shouldCheckDeleteMethod() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks"))
+                .uri(URI.create(url + "/" + endPoints.tasksKey))
                 .DELETE()
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        assertEquals(200, response.statusCode());
+        assertEquals(404, response.statusCode());
         assertTrue(manager.getTasksPriorityTree().isEmpty());
 
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/task"))
+                .uri(URI.create(url + "/" + endPoints.taskKey))
                 .DELETE()
                 .build();
 
@@ -261,7 +262,7 @@ class HttpTaskServerTest {
         assertTrue(manager.getAllTasks().isEmpty());
 
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/epic"))
+                .uri(URI.create(url + "/" + endPoints.epicKey))
                 .DELETE()
                 .build();
 
@@ -270,7 +271,7 @@ class HttpTaskServerTest {
         assertTrue(manager.getAllEpics().isEmpty());
 
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/subtask"))
+                .uri(URI.create(url + "/" + endPoints.subtaskKey))
                 .DELETE()
                 .build();
 
@@ -299,7 +300,7 @@ class HttpTaskServerTest {
         assertEquals(2, manager.getAllSubtasks().size());
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/task?id=1"))
+                .uri(URI.create(url + "/" + endPoints.taskKey + "?id=1"))
                 .DELETE()
                 .build();
 
@@ -308,7 +309,7 @@ class HttpTaskServerTest {
         assertEquals(0, manager.getAllTasks().size());
 
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/subtask?id=3"))
+                .uri(URI.create(url + "/" + endPoints.subtaskKey + "?id=3"))
                 .DELETE()
                 .build();
 
@@ -317,7 +318,7 @@ class HttpTaskServerTest {
         assertEquals(1, manager.getAllSubtasks().size());
 
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/subtask?id=4"))
+                .uri(URI.create(url + "/" + endPoints.subtaskKey + "?id=4"))
                 .DELETE()
                 .build();
 
@@ -326,7 +327,7 @@ class HttpTaskServerTest {
         assertEquals(0, manager.getAllSubtasks().size());
 
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/epic?id=2"))
+                .uri(URI.create(url + "/" + endPoints.epicKey + "?id=2"))
                 .DELETE()
                 .build();
 
@@ -335,7 +336,7 @@ class HttpTaskServerTest {
         assertEquals(0, manager.getAllEpics().size());
 
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/task?id=" + FAKE_ID))
+                .uri(URI.create(url + "/" + endPoints.taskKey + "?id=" + FAKE_ID))
                 .DELETE()
                 .build();
 
@@ -345,28 +346,28 @@ class HttpTaskServerTest {
 
     private void createAllTask() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/task"))
+                .uri(URI.create(url + "/" + endPoints.taskKey))
                 .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(task1)))
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/epic"))
+                .uri(URI.create(url + "/" + endPoints.epicKey))
                 .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(epic1)))
                 .build();
 
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/subtask"))
+                .uri(URI.create(url + "/" + endPoints.subtaskKey))
                 .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(subtask1)))
                 .build();
 
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/subtask"))
+                .uri(URI.create(url + "/" + endPoints.subtaskKey))
                 .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(subtask2)))
                 .build();
 
@@ -375,14 +376,14 @@ class HttpTaskServerTest {
 
     private void createHistory() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/task"))
+                .uri(URI.create(url + "/" + endPoints.taskKey))
                 .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(task1)))
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/tasks/task?id=1"))
+                .uri(URI.create(url + "/" + endPoints.taskKey + "?id=1"))
                 .GET()
                 .build();
 

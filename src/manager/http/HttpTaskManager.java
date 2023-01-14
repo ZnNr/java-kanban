@@ -21,25 +21,20 @@ public class HttpTaskManager extends FileBackedTasksManager {
         this.kvTaskClient = new KVTaskClient(url);
     }
 
-    String taskKey = "tasks/task";
-    String epicKey = "tasks/epic";
-    String subtaskKey = "tasks/subtask";
-    String historyKey = "tasks/history";
-
     @Override
     protected void save() {
         try {
-            kvTaskClient.put(taskKey, gson.toJson(tasks));
-            kvTaskClient.put(epicKey, gson.toJson(epics));
-            kvTaskClient.put(subtaskKey, gson.toJson(subtasks));
-            kvTaskClient.put(historyKey, gson.toJson(getHistory()));
+            kvTaskClient.put(endPoints.taskKey, gson.toJson(tasks));
+            kvTaskClient.put(endPoints.epicKey, gson.toJson(epics));
+            kvTaskClient.put(endPoints.subtaskKey, gson.toJson(subtasks));
+            kvTaskClient.put(endPoints.historyKey, gson.toJson(getHistory()));
         } catch (Exception e) {
             throw new ManagerSaveException("Не удалось сохранить задачи");
         }
     }
 
     public void loadFromServer() {
-        String tasksFromJson = kvTaskClient.load(taskKey);
+        String tasksFromJson = kvTaskClient.load(endPoints.taskKey);
         if (tasksFromJson != null) {
             Type typeToken = new TypeToken<HashMap<Integer, Task>>() {
             }.getType();
@@ -48,25 +43,26 @@ public class HttpTaskManager extends FileBackedTasksManager {
             tasksPriorityTree.addAll(tasks.values());
         }
 
-        String epicsFromJson = kvTaskClient.load(epicKey);
+        String epicsFromJson = kvTaskClient.load(endPoints.epicKey);
         if (epicsFromJson != null) {
             Type typeToken = new TypeToken<HashMap<Integer, Epic>>() {
             }.getType();
 
             epics = gson.fromJson(epicsFromJson, typeToken);
-            tasksPriorityTree.addAll(epics.values());
+
         }
 
-        String subtasksFromJson = kvTaskClient.load(subtaskKey);
+        String subtasksFromJson = kvTaskClient.load(endPoints.subtaskKey);
         if (subtasksFromJson != null) {
             Type typeToken = new TypeToken<HashMap<Integer, Subtask>>() {
             }.getType();
 
             subtasks = gson.fromJson(subtasksFromJson, typeToken);
             tasksPriorityTree.addAll(subtasks.values());
+
         }
 
-        String historyFromJson = kvTaskClient.load(historyKey);
+        String historyFromJson = kvTaskClient.load(endPoints.historyKey);
         if (historyFromJson != null) {
             Type typeToken = new TypeToken<List<Task>>() {
             }.getType();

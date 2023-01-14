@@ -9,11 +9,7 @@ import manager.FileStringFormatter;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
@@ -21,7 +17,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     protected void save() {
 
-        final String header = "id,type,name,status,description,epic,duration,startTime,endTime";
+        final String header = "id,type,title,status,description,epic,duration,startTime,endTime";
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(PATH_FILE, StandardCharsets.UTF_8))) {
 
@@ -93,8 +89,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     }
                     allTasks.put(task.getId(), task);
 
-                    Epic epicToConnectSubTasks = fileBackedTasksManager.epics.get(((Subtask) task).getEpicId());
-                    epicToConnectSubTasks.getSubTaskIds().add(task.getId());
+                    Epic epicToConnectSubtasks = fileBackedTasksManager.epics.get(((Subtask) task).getEpicId());
+                    epicToConnectSubtasks.getSubtaskIds().add(task.getId());
 
                 } else {
                     fileBackedTasksManager.tasks.put(task.getId(), task);

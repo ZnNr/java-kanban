@@ -31,7 +31,7 @@ public class HttpTaskServer {
         manager = Managers.getDefault();
         server = HttpServer.create();
         server.bind(new InetSocketAddress(PORT), 0);
-        server.createContext("/tasks", new TasksHandler());
+        server.createContext(endPoints.tasksKey, new TasksHandler());
     }
 
     public TaskManager getManager() {
@@ -74,18 +74,18 @@ public class HttpTaskServer {
             String path = exchange.getRequestURI().getPath();
             String query = exchange.getRequestURI().getQuery();
 
-            if (path.endsWith("/tasks") && query == null) {
+            if (path.endsWith(endPoints.tasksKey) && query == null) {
                 statusCode = 200;
                 response = gson.toJson(manager.getTasksPriorityTree());
             }
 
-            if (path.endsWith("tasks/subtask/epic") && query != null) {
+            if (path.endsWith(endPoints.subtaskEpicKey) && query != null) {
                 statusCode = 200;
                 int taskId = getIdFromQuery(query);
                 response = gson.toJson(manager.getAllSubtasksByEpicId(manager.getEpicById(taskId)));
             }
 
-            if (path.endsWith("tasks/task")) {
+            if (path.endsWith(endPoints.taskKey)) {
                 if (query != null) {
                     Task taskForReturn = null;
                     int taskId = getIdFromQuery(query);
@@ -109,12 +109,12 @@ public class HttpTaskServer {
                 }
             }
 
-            if (path.endsWith("tasks/history") && query == null) {
+            if (path.endsWith(endPoints.historyKey) && query == null) {
                 statusCode = 200;
                 response = gson.toJson(manager.getHistory());
             }
 
-            if (path.endsWith("tasks/epic")) {
+            if (path.endsWith(endPoints.epicKey)) {
                 if (query != null) {
                     Epic epicForReturn = null;
                     int epicId = getIdFromQuery(query);
@@ -138,7 +138,7 @@ public class HttpTaskServer {
                 }
             }
 
-            if (path.endsWith("tasks/subtask")) {
+            if (path.endsWith(endPoints.subtaskKey)) {
                 if (query != null) {
                     Subtask subtaskForReturn = null;
                     int subTaskId = getIdFromQuery(query);
@@ -179,19 +179,19 @@ public class HttpTaskServer {
             if (inputStream != null) {
                 String body = new String(inputStream.readAllBytes(), CHARSET);
                 if (query == null) {
-                    if (path.endsWith("tasks/task")) {
+                    if (path.endsWith(endPoints.taskKey)) {
                         statusCode = 201;
                         Task newTask = gson.fromJson(body, Task.class);
                         manager.createTask(newTask);
                         response = "Задача типа Task создана" + newTask;
 
-                    } else if (path.endsWith("tasks/epic")) {
+                    } else if (path.endsWith(endPoints.epicKey)) {
                         statusCode = 201;
                         Epic newEpic = gson.fromJson(body, Epic.class);
                         manager.createEpic(newEpic);
                         response = "Задача типа Epic создана" + newEpic;
 
-                    } else if (path.endsWith("tasks/subtask")) {
+                    } else if (path.endsWith(endPoints.subtaskKey)) {
                         Subtask newSubtask = gson.fromJson(body, Subtask.class);
                         Epic epicForSubTask = null;
 
@@ -235,7 +235,7 @@ public class HttpTaskServer {
                 response = "Все задачи удалены";
             }
 
-            if (path.endsWith("tasks/task")) {
+            if (path.endsWith(endPoints.taskKey)) {
                 if (query != null) {
                     Task taskForRemove = null;
                     int taskId = getIdFromQuery(query);
@@ -261,7 +261,7 @@ public class HttpTaskServer {
                 }
             }
 
-            if (path.endsWith("tasks/epic")) {
+            if (path.endsWith(endPoints.epicKey)) {
                 if (query != null) {
                     Epic epicForRemove = null;
                     int epicId = getIdFromQuery(query);
@@ -288,7 +288,7 @@ public class HttpTaskServer {
                 }
             }
 
-            if (path.endsWith("tasks/subtask")) {
+            if (path.endsWith(endPoints.subtaskKey)) {
                 if (query != null) {
                     Subtask subtaskForRemove = null;
                     int subtaskId = getIdFromQuery(query);

@@ -245,7 +245,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
         manager.updateTask(task1);
 
-        assertEquals("New Task", manager.getTaskById(1).getName());
+        assertEquals("New Task", manager.getTaskById(1).getTitle());
         assertEquals(Status.IN_PROGRESS, manager.getTaskById(1).getStatus());
     }
 
@@ -261,7 +261,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
         manager.updateEpic(epic1);
 
-        assertEquals("New Epic", manager.getEpicById(1).getName());
+        assertEquals("New Epic", manager.getEpicById(1).getTitle());
         assertEquals(Status.IN_PROGRESS, manager.getEpicById(1).getStatus());
     }
 

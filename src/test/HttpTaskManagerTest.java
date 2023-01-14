@@ -63,20 +63,17 @@ class HttpTaskManagerTest {
 
     @Test
     public void shouldSaveAndRestoreEpicWithoutSubtasks() {
+        //добавлен новый тест по предложенной логике
         List<Task> epicList = new ArrayList<>(List.of(epic1));
-
         manager.createEpic(epic1);
-
         manager = (HttpTaskManager) Managers.getDefault();
         manager.loadFromServer();
-
         assertEquals(epicList.size(), manager.getAllEpics().size());
         assertEquals(List.of(), manager.getAllSubtasks());
     }
 
     @Test
     public void shouldSaveAndRestoreAnEmptyHistoryList() {
-
         manager.createTask(task1);
         manager.createTask(task2);
 
@@ -115,6 +112,23 @@ class HttpTaskManagerTest {
         assertFalse(manager.getAllTasks().isEmpty());
         assertFalse(manager.getAllEpics().isEmpty());
         assertFalse(manager.getAllSubtasks().isEmpty());
+    }
+
+    @Test
+    public void reviewerTestSuggestion() {
+        manager.createEpic(epic1);
+        manager.createTask(task1);
+        manager.createSubtask(epic1, subtask1);
+        manager.getTaskById(task1.getId());
+        HttpTaskManager manager2 = (HttpTaskManager) Managers.getDefault();
+        manager2.loadFromServer();
+        assertEquals(manager.getAllEpics(), manager2.getAllEpics());   //!  супер
+        assertEquals(manager.getAllSubtasks(), manager2.getAllSubtasks()); //!  супер
+        assertEquals(manager.getAllTasks(), manager2.getAllTasks());  //!  супер
+        assertEquals(manager.getHistory(), manager2.getHistory());  //!  супер
+        System.out.println(manager.getTasksPriorityTree());
+        System.out.println(manager2.getTasksPriorityTree());
+        assertEquals(manager.getTasksPriorityTree(), manager2.getTasksPriorityTree()); // работает в public void loadFromServer() убрано  добавление Эпиков в таск приорити трии
     }
 
     @AfterAll

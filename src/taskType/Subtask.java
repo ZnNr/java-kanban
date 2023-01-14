@@ -6,12 +6,12 @@ import java.time.LocalDateTime;
 public class Subtask extends Task {
     protected int epicId;
 
-    public Subtask(String name, String description) {
-        super(name, description);
+    public Subtask(String title, String description) {
+        super(title, description);
     }
 
-    public Subtask(String name, String description, Duration duration, LocalDateTime startTime) {
-        super(name, description, duration, startTime);
+    public Subtask(String title, String description, Duration duration, LocalDateTime startTime) {
+        super(title, description, duration, startTime);
     }
 
     public int getEpicId() {
@@ -24,9 +24,9 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        return "SubTask{" +
+        return "Subtask{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", status='" + status + '\'' +
                 ", epicId=" + epicId +

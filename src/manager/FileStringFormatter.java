@@ -44,7 +44,7 @@ public class FileStringFormatter {
 
         String id = String.valueOf(task.getId());
         String type;
-        String name = task.getName();
+        String name = task.getTitle();
         String status = String.valueOf(task.getStatus());
         String description = task.getDescription();
         String epic;

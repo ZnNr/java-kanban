@@ -1,4 +1,4 @@
-Яндекс Практикум: проект "RESTful Канбан-доска"
+## Яндекс Практикум: проект "RESTful Канбан-доска"
 
 
 Технологии: Java (no frameworks) + JUnit + GSON + RESTful API
